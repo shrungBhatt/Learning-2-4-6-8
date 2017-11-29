@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-/**
- * Created by jigsaw on 28/11/17.
- */
+
 
 public class StartUpReceiver extends BroadcastReceiver {
 
@@ -17,7 +15,9 @@ public class StartUpReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.i(TAG,"Received BroadCastIntent: " + intent.getAction());
+        Log.i(TAG,"Received BroadCast Intent: " + intent.getAction());
 
+        boolean isOn = SharedPreferencesData.isAlarmOn(context);
+        PollService.setServiceAlarm(context,isOn);
     }
 }

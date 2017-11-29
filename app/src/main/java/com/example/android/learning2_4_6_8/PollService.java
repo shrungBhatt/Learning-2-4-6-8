@@ -38,7 +38,7 @@ public class PollService extends IntentService {
 
         if(isOn){
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-                    SystemClock.elapsedRealtime(),1000*5,pi);
+                    SystemClock.elapsedRealtime(),1000*10,pi);
         }else{
             alarmManager.cancel(pi);
             pi.cancel();
@@ -64,5 +64,7 @@ public class PollService extends IntentService {
         NotificationManagerCompat notificationManagerCompat =
                 NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(0,notification);
+
+        sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION));
     }
 }

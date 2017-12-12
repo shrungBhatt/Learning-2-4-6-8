@@ -3,9 +3,6 @@ package com.example.android.learning2_4_6_8;
 import android.content.Context;
 import android.preference.PreferenceManager;
 
-/**
- * Created by jigsaw on 28/11/17.
- */
 
 public class SharedPreferencesData {
 

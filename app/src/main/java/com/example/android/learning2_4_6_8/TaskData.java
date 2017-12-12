@@ -1,8 +1,6 @@
 package com.example.android.learning2_4_6_8;
 
-/**
- * Created by jigsaw on 12/12/17.
- */
+
 
 public class TaskData {
 

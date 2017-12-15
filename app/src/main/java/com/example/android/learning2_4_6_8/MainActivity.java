@@ -44,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        PollService.setServiceAlarm(getApplicationContext(),true);
 
         mTaskListRecyclerView = findViewById(R.id.tasks_list_recycler_view);
         mTaskListRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
+
         fetchTaskData(getApplicationContext());
+//        Intent i = PollService.newIntent(MainActivity.this);
+//        startService(i);
 
     }
 
@@ -112,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void fetchTaskData(Context context){
+
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         final String currentDate = sdf.format(new Date()).trim();
 
@@ -121,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         mTaskDatas = parseFetchedJson(response);
+                        SharedPreferencesData.setTaskArrayJson(getApplicationContext(),response);
+                        Intent i = PollService.newIntent(getApplicationContext());
+                        startService(i);
                         if(mTaskDatas != null){
                             mTaskListRecyclerView.setAdapter(new TaskAdapter(mTaskDatas));
                         }
@@ -135,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Map<String,String> getParams(){
                 Map<String,String> params = new HashMap<>();
-                params.put("current_date","14-12-2017");
+                params.put("current_date",currentDate);
 
                 return params;
             }
@@ -144,12 +151,13 @@ public class MainActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
-
     }
 
-    private List<TaskData> parseFetchedJson(String result){
+    public List<TaskData> parseFetchedJson(String result){
 
         List<TaskData> taskDatas = new ArrayList<>();
+
+
 
         try {
             JSONArray jsonArray = new JSONArray(result);
@@ -167,11 +175,11 @@ public class MainActivity extends AppCompatActivity {
                 taskData.setmRepCounter(Integer.valueOf(jsonObject.getString("rep_counter")));
 
                 taskDatas.add(taskData);
-
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+//        taskData.setmTaskDatas(taskDatas);
 
         return taskDatas;
     }

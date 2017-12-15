@@ -1,6 +1,7 @@
 package com.example.android.learning2_4_6_8;
 
 
+import java.util.List;
 
 public class TaskData {
 
@@ -9,6 +10,7 @@ public class TaskData {
     private String mEndDate;
     private String mTaskContent;
     private int mRepCounter;
+    private List<TaskData> mTaskDatas;
 
     public int getmId() {
         return mId;
@@ -48,5 +50,13 @@ public class TaskData {
 
     public void setmRepCounter(int mRepCounter) {
         this.mRepCounter = mRepCounter;
+    }
+
+    public List<TaskData> getmTaskDatas() {
+        return mTaskDatas;
+    }
+
+    public void setmTaskDatas(List<TaskData> mTaskDatas) {
+        this.mTaskDatas = mTaskDatas;
     }
 }

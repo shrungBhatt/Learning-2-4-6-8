@@ -1,70 +1,147 @@
 package com.example.android.learning2_4_6_8;
 
-import android.app.AlarmManager;
 import android.app.IntentService;
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.os.SystemClock;
-import android.support.annotation.NonNull;
+import android.net.ConnectivityManager;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class PollService extends IntentService {
+    public static final String TAG = "PollService";
 
-    private static final String TAG = "PollService";
+    private Context mContext;
 
-    private static final String ACTION_SHOW_NOTIFICATION =
-            "com.example.Learning2-4-6-8.SHOW_NOTIFICATION";
+    private List<TaskData> mTaskDatas;
 
-    @NonNull
-    public static Intent newIntent(Context context){
-        return new Intent(context,PollService.class);
+    public static Intent newIntent(Context context) {
+        return new Intent(context, PollService.class);
     }
 
-    public PollService(){
+    public PollService() {
         super(TAG);
     }
 
-    public static void setServiceAlarm(@Nullable Context context,boolean isOn){
-        Intent i = PollService.newIntent(context);
-        PendingIntent pi = PendingIntent.getService(context,0,i,0);
-
-        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-
-        if(isOn){
-            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-                    SystemClock.elapsedRealtime(),1000*10,pi);
-        }else{
-            alarmManager.cancel(pi);
-            pi.cancel();
-        }
-
-        SharedPreferencesData.setAlarmOn(context,true);
-    }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Intent i = MainActivity.newIntent(this);
-        PendingIntent pi = PendingIntent.getActivity(this,0,i,0);
+        String endDate;
+        String startDate;
+        int repCounter;
 
-        Notification notification = new Notification.Builder(this)
-                .setTicker("New Notification")
-                .setSmallIcon(android.R.drawable.ic_menu_report_image)
-                .setContentTitle("Learn This subject")
-                .setContentText("Start Learning")
-                .setContentIntent(pi)
-                .setAutoCancel(true)
-                .build();
+        Log.e(TAG,"Intent received" + intent);
 
-        NotificationManagerCompat notificationManagerCompat =
-                NotificationManagerCompat.from(this);
-        notificationManagerCompat.notify(0,notification);
+        if (!isNetworkAvailableAndConnected()) {
+            return;
+        }
 
-        sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION));
+        MainActivity mainActivity = new MainActivity();
+//        mainActivity.fetchTaskData(PollService.this);
+
+        String arrayJson = SharedPreferencesData.getTaskArrayJson(this);
+        mTaskDatas = mainActivity.parseFetchedJson(arrayJson);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar calendar = Calendar.getInstance();
+
+        for (int i = 0;i<mTaskDatas.size();i++) {
+            endDate = mTaskDatas.get(i).getmEndDate();
+            repCounter = mTaskDatas.get(i).getmRepCounter();
+            final int id = mTaskDatas.get(i).getmId();
+
+            switch (repCounter) {
+                case 1:
+                    try {
+                        calendar.setTime(simpleDateFormat.parse(endDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    calendar.add(Calendar.DATE, 4);
+                    endDate = simpleDateFormat.format(calendar.getTime()).trim();
+                    repCounter++;
+                    break;
+
+                case 2:
+                    try {
+                        calendar.setTime(simpleDateFormat.parse(endDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    calendar.add(Calendar.DATE, 6);
+                    endDate = simpleDateFormat.format(calendar.getTime()).trim();
+                    repCounter++;
+                    break;
+
+                case 3:
+                    try {
+                        calendar.setTime(simpleDateFormat.parse(endDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    calendar.add(Calendar.DATE, 8);
+                    endDate = simpleDateFormat.format(calendar.getTime()).trim();
+                    repCounter++;
+                    break;
+            }
+
+            final String finalEndDate = endDate;
+
+            final int finalRepCounter = repCounter;
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                    "http://ersnexus.esy.es/update_task_data.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.e(TAG,response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }) {
+
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("end_date",finalEndDate);
+                    params.put("rep_counter",String.valueOf(finalRepCounter));
+                    params.put("id",String.valueOf(id));
+                    return params;
+                }
+
+            };
+
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(stringRequest);
+
+
+        }
+
+    }
+
+    private boolean isNetworkAvailableAndConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+
+        boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
+
+        return (isNetworkAvailable && cm.getActiveNetworkInfo().isConnected());
     }
 }

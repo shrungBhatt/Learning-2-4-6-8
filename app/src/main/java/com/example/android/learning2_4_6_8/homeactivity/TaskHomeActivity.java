@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 
 import com.example.android.learning2_4_6_8.R;
 
@@ -45,6 +46,13 @@ public class TaskHomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(2).setText("Completed");
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_task_home_activity, menu);
+        return true;
     }
 
 

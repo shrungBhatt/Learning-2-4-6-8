@@ -1,4 +1,4 @@
-package com.example.android.learning2_4_6_8;
+package com.example.android.learning2_4_6_8.models;
 
 
 import java.util.List;

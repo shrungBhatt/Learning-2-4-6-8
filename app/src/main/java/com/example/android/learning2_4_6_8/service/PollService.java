@@ -1,4 +1,4 @@
-package com.example.android.learning2_4_6_8;
+package com.example.android.learning2_4_6_8.service;
 
 import android.app.IntentService;
 import android.content.Context;
@@ -13,6 +13,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.android.learning2_4_6_8.MainActivity;
+import com.example.android.learning2_4_6_8.models.TaskData;
+import com.example.android.learning2_4_6_8.util.SharedPreferencesData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -114,7 +117,7 @@ public class PollService extends IntentService {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            Log.e(TAG,"Volley Error (PollService): " + error.toString());
                         }
                     }) {
 

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -19,6 +18,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.android.learning2_4_6_8.models.TaskData;
+import com.example.android.learning2_4_6_8.service.PollService;
+import com.example.android.learning2_4_6_8.util.SharedPreferencesData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mTaskListRecyclerView;
     private List<TaskData> mTaskDatas;
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, MainActivity.class);
-    }
+//    public static Intent newIntent(Context context) {
+//        return new Intent(context, MainActivity.class);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,9 +158,6 @@ public class MainActivity extends AppCompatActivity {
     public List<TaskData> parseFetchedJson(String result){
 
         List<TaskData> taskDatas = new ArrayList<>();
-
-
-
         try {
             JSONArray jsonArray = new JSONArray(result);
 
@@ -180,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 //        taskData.setmTaskDatas(taskDatas);
-
         return taskDatas;
     }
 

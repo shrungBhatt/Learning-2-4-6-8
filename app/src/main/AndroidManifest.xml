@@ -16,6 +16,10 @@
 
 
         <activity android:name=".MainActivity">
+
+        </activity>
+
+        <activity android:name=".homeactivity.TaskHomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,11 +27,10 @@
             </intent-filter>
         </activity>
 
-
         <activity android:name=".AddTaskActivity"/>
 
 
-        <service android:name=".PollService"/>
+        <service android:name=".service.PollService"/>
 
     </application>
 

@@ -1,4 +1,4 @@
-package com.example.android.learning2_4_6_8;
+package com.example.android.learning2_4_6_8.util;
 
 import android.content.Context;
 import android.preference.PreferenceManager;

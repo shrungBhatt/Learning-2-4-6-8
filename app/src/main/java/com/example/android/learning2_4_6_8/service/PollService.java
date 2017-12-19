@@ -47,6 +47,8 @@ public class PollService extends IntentService {
         String startDate;
         int repCounter;
 
+
+
         Log.e(TAG,"Intent received" + intent);
 
         if (!isNetworkAvailableAndConnected()) {

@@ -1,5 +1,7 @@
 package com.example.android.learning2_4_6_8.homeactivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -7,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
 import com.example.android.learning2_4_6_8.R;
+import com.example.android.learning2_4_6_8.service.FetchTodayTaskService;
 
 /**
  * Created by jigsaw on 19/12/17.
@@ -16,6 +19,10 @@ public class TaskHomeActivity extends AppCompatActivity {
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
+
+    public static Intent newIntent(Context context){
+        return new Intent(context,TaskHomeActivity.class);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -45,6 +52,8 @@ public class TaskHomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(1).setText("All");
         mTabLayout.getTabAt(2).setText("Completed");
 
+        Intent i = FetchTodayTaskService.newIntent(getApplicationContext());
+        startService(i);
 
     }
 

@@ -48,12 +48,12 @@ public class FetchTodayTaskService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.e(TAG,"Received Intent" + intent);
 
-        fetchTaskData(getApplicationContext());
+        fetchTaskData(this);
 
 
     }
 
-    public void fetchTaskData(Context context){
+    public void fetchTaskData(final Context context){
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         final String currentDate = sdf.format(new Date()).trim();
@@ -65,8 +65,8 @@ public class FetchTodayTaskService extends IntentService {
                     public void onResponse(String response) {
                         Log.e(TAG,"Received json: " + response);
                         mTaskDatas = parseFetchedJson(response);
-                        SharedPreferencesData.setTaskArrayJson(getApplicationContext(),response);
-                        updateTaskData(mTaskDatas);
+                        SharedPreferencesData.setTaskArrayJson(context,response);
+//                        updateTaskData(mTaskDatas);
                     }
                 },
                 new Response.ErrorListener() {
@@ -89,7 +89,7 @@ public class FetchTodayTaskService extends IntentService {
         requestQueue.add(stringRequest);
     }
 
-    public List<TaskData> parseFetchedJson(String result){
+    public static List<TaskData> parseFetchedJson(String result){
 
         List<TaskData> taskDatas = new ArrayList<>();
         try {
@@ -117,7 +117,7 @@ public class FetchTodayTaskService extends IntentService {
 
     private void updateTaskData(List<TaskData> taskDatas){
 
-        for (int i = 0;i < taskDatas.size();i++) {
+        for (int i = 0 ; i < taskDatas.size() ; i++) {
             String endDate = taskDatas.get(i).getmEndDate();
             int repCounter = taskDatas.get(i).getmRepCounter();
             final int id = taskDatas.get(i).getmId();
@@ -173,7 +173,7 @@ public class FetchTodayTaskService extends IntentService {
         }
     }
 
-    private String parseAndIncrementDate(String endDate, int addDays){
+    public String parseAndIncrementDate(String endDate, int addDays){
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Calendar calendar = Calendar.getInstance();

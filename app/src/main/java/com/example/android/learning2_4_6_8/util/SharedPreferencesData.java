@@ -10,6 +10,7 @@ public class SharedPreferencesData {
 
     private static String PREF_IS_ALARM_ON = "isAlarmOn";
     private static String PREF_TASK_ARRAY_JSON = "taskArrayList";
+    private static String PREF_POLLING_CHECKBOX_VAL= "pollingCheckboxValue";
 
     public static boolean isAlarmOn(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context)
@@ -30,6 +31,16 @@ public class SharedPreferencesData {
         PreferenceManager.getDefaultSharedPreferences(context).edit()
                 .putString(PREF_TASK_ARRAY_JSON,arrayJson).apply();
 
+    }
+
+    public static boolean isPollingCheckBoxChecked(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_IS_ALARM_ON,false);
+    }
+
+    public static void setPollingCheckBoxVal(Context context,boolean isOn){
+        PreferenceManager.getDefaultSharedPreferences(context).edit().
+                putBoolean(PREF_IS_ALARM_ON,isOn).apply();
     }
 
 

@@ -4,13 +4,13 @@
 
 
     <item
-        android:id="@+id/add_task"
+        android:id="@+id/menu_add_task"
         android:icon="@drawable/ic_menu_add_simple"
         android:title="Add Task"
         app:showAsAction="always"/>
 
 
-    <item android:id="@+id/polling_status_check_box"
+    <item android:id="@+id/menu_polling_status_check_box"
         android:title="Polling"
         android:icon="@android:drawable/ic_menu_preferences"
         android:checkable="true"

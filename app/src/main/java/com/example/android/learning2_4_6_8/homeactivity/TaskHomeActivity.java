@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -67,18 +68,45 @@ public class TaskHomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(1).setText("All");
         mTabLayout.getTabAt(2).setText("Completed");
 
-        Intent i = FetchTodayTaskService.newIntent(getApplicationContext());
-        startService(i);
-
+//        Intent i = FetchTodayTaskService.newIntent(getApplicationContext());
+//        startService(i);
+//        FetchTodayTaskService.setServiceAlarm(getApplicationContext(),true);
 
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_add_task:
+                return true;
+            case R.id.menu_polling_status_check_box:
+                boolean shouldStartService =
+                        !FetchTodayTaskService.isServiceAlarmOn(getApplicationContext());
+                if(shouldStartService){
+                    SharedPreferencesData.setPollingCheckBoxVal(getApplicationContext(),true);
+                }
+                FetchTodayTaskService.setServiceAlarm(getApplicationContext(),shouldStartService);
+                invalidateOptionsMenu();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_task_home_activity, menu);
+
+
+        MenuItem pollingCheckBox = menu.findItem(R.id.menu_polling_status_check_box);
+        if(FetchTodayTaskService.isServiceAlarmOn(getApplicationContext())){
+            pollingCheckBox.setChecked(true);
+        }else{
+            pollingCheckBox.setChecked(false);
+        }
+
         return true;
     }
 

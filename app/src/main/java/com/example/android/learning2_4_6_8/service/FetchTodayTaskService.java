@@ -1,9 +1,14 @@
 package com.example.android.learning2_4_6_8.service;
 
+import android.app.AlarmManager;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -12,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.android.learning2_4_6_8.homeactivity.TaskHomeActivity;
 import com.example.android.learning2_4_6_8.models.TaskData;
 import com.example.android.learning2_4_6_8.util.SharedPreferencesData;
 
@@ -24,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,12 +50,39 @@ public class FetchTodayTaskService extends IntentService {
         super(TAG);
     }
 
+    public static void setServiceAlarm(Context context,boolean isOn){
+        Calendar cur_cal = new GregorianCalendar();
+        cur_cal.setTimeInMillis(System.currentTimeMillis());
+
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(System.currentTimeMillis());
+        cal.set(Calendar.HOUR_OF_DAY, 19);
+        cal.set(Calendar.MINUTE, 14);
+
+        Intent i = FetchTodayTaskService.newIntent(context);
+        PendingIntent pi = PendingIntent.getService(context,0,i,0);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        if(isOn){
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY,pi);
+        }else{
+            alarmManager.cancel(pi);
+            pi.cancel();
+        }
+
+    }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.e(TAG,"Received Intent" + intent);
+        Log.e(TAG,"Received Intent: " + intent);
+        Log.e(TAG,"Alarm Manager called");
 
         fetchTaskData(this);
+
+        sendNotification(getApplicationContext());
 
 
     }
@@ -187,5 +221,31 @@ public class FetchTodayTaskService extends IntentService {
         endDate = simpleDateFormat.format(calendar.getTime()).trim();
 
         return endDate;
+    }
+
+    public static boolean isServiceAlarmOn(Context context){
+        Intent i = FetchTodayTaskService.newIntent(context);
+        PendingIntent pi = PendingIntent.
+                getService(context,0,i,PendingIntent.FLAG_NO_CREATE);
+        return pi != null;
+    }
+
+    private void sendNotification(Context context){
+
+        Intent i = TaskHomeActivity.newIntent(context);
+        PendingIntent pi = PendingIntent.getActivity(context,0,i,0);
+
+        Notification notification = new NotificationCompat.Builder(context)
+                .setTicker("Today's Task's to Complete")
+                .setSmallIcon(android.R.drawable.ic_menu_info_details)
+                .setContentTitle("Today's Task's to Complete")
+                .setContentIntent(pi)
+                .setAutoCancel(true)
+                .build();
+
+        NotificationManagerCompat notificationManagerCompat =
+                NotificationManagerCompat.from(context);
+        notificationManagerCompat.notify(0,notification);
+
     }
 }

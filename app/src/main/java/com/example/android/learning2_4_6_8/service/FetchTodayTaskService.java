@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -57,8 +58,14 @@ public class FetchTodayTaskService extends IntentService {
 
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
-        cal.set(Calendar.HOUR_OF_DAY, 19);
-        cal.set(Calendar.MINUTE, 14);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE,1);
+        cal.set(Calendar.SECOND,0);
+
+        long start = cal.getTimeInMillis();
+        if (cal.before(Calendar.getInstance())) {
+            start += AlarmManager.INTERVAL_DAY;
+        }
 
         Intent i = FetchTodayTaskService.newIntent(context);
         PendingIntent pi = PendingIntent.getService(context,0,i,0);
@@ -66,7 +73,7 @@ public class FetchTodayTaskService extends IntentService {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if(isOn){
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(),
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,start,
                     AlarmManager.INTERVAL_DAY,pi);
         }else{
             alarmManager.cancel(pi);
@@ -241,6 +248,8 @@ public class FetchTodayTaskService extends IntentService {
                 .setContentTitle("Today's Task's to Complete")
                 .setContentIntent(pi)
                 .setAutoCancel(true)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                .setLights(0xff00ff00, 1500, 1500)
                 .build();
 
         NotificationManagerCompat notificationManagerCompat =

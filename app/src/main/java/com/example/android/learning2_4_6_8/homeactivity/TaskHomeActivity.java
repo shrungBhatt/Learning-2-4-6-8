@@ -85,6 +85,9 @@ public class TaskHomeActivity extends AppCompatActivity {
                         !FetchTodayTaskService.isServiceAlarmOn(getApplicationContext());
                 if(shouldStartService){
                     SharedPreferencesData.setPollingCheckBoxVal(getApplicationContext(),true);
+                }else{
+                    SharedPreferencesData.setPollingCheckBoxVal(getApplicationContext(),false);
+
                 }
                 FetchTodayTaskService.setServiceAlarm(getApplicationContext(),shouldStartService);
                 invalidateOptionsMenu();
@@ -101,7 +104,7 @@ public class TaskHomeActivity extends AppCompatActivity {
 
 
         MenuItem pollingCheckBox = menu.findItem(R.id.menu_polling_status_check_box);
-        if(FetchTodayTaskService.isServiceAlarmOn(getApplicationContext())){
+        if(SharedPreferencesData.isPollingCheckBoxChecked(getApplicationContext())){
             pollingCheckBox.setChecked(true);
         }else{
             pollingCheckBox.setChecked(false);

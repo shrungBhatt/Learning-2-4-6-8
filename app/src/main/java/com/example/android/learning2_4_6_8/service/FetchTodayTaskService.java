@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//This is the service class used to fetch the tasks from the server having current date.
 
 public class FetchTodayTaskService extends IntentService {
 
@@ -43,6 +44,7 @@ public class FetchTodayTaskService extends IntentService {
 
     private static final String TAG = "FetchTodayTaskService";
 
+    //Static method used to instantiate this service class using an intent.
     public static Intent newIntent(Context context){
         return new Intent(context,FetchTodayTaskService.class);
     }
@@ -51,29 +53,31 @@ public class FetchTodayTaskService extends IntentService {
         super(TAG);
     }
 
+    //This method is used to set the service alarm on and off using a toggle button in TasKHomeActivity.java
     public static void setServiceAlarm(Context context,boolean isOn){
-        Calendar cur_cal = new GregorianCalendar();
-        cur_cal.setTimeInMillis(System.currentTimeMillis());
-
-
+        //Setting the trigger time to 00.00.00 (12:00 AM).
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
         cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE,1);
+        cal.set(Calendar.MINUTE,0);
         cal.set(Calendar.SECOND,0);
 
-        long start = cal.getTimeInMillis();
+        /*Check whether the current time before or after the trigger time.
+        * If the time is before add 24 hours else continue. */
+        long triggerTime = cal.getTimeInMillis();
         if (cal.before(Calendar.getInstance())) {
-            start += AlarmManager.INTERVAL_DAY;
+            triggerTime += AlarmManager.INTERVAL_DAY;
         }
 
+        //Create a pending Intent for the AlarmManager.
         Intent i = FetchTodayTaskService.newIntent(context);
         PendingIntent pi = PendingIntent.getService(context,0,i,0);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
+        //Set the alarm
         if(isOn){
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,start,
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,triggerTime,
                     AlarmManager.INTERVAL_DAY,pi);
         }else{
             alarmManager.cancel(pi);
@@ -87,13 +91,12 @@ public class FetchTodayTaskService extends IntentService {
         Log.e(TAG,"Received Intent: " + intent);
         Log.e(TAG,"Alarm Manager called");
 
-        fetchTaskData(this);
+        fetchTaskData(this);//Fetch Task from the server.
 
-        sendNotification(getApplicationContext());
-
-
+        sendNotification(getApplicationContext());//Notify the user.
     }
 
+    //Method used to fetch the current days task from the server.
     public void fetchTaskData(final Context context){
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -130,6 +133,7 @@ public class FetchTodayTaskService extends IntentService {
         requestQueue.add(stringRequest);
     }
 
+    //Method used to parse the JSON of response of the server.
     public static List<TaskData> parseFetchedJson(String result){
 
         List<TaskData> taskDatas = new ArrayList<>();
@@ -156,6 +160,8 @@ public class FetchTodayTaskService extends IntentService {
         return taskDatas;
     }
 
+
+    //Volley request to update the current days task, to update their endDate and repCounter.
     private void updateTaskData(List<TaskData> taskDatas){
 
         for (int i = 0 ; i < taskDatas.size() ; i++) {
@@ -214,6 +220,7 @@ public class FetchTodayTaskService extends IntentService {
         }
     }
 
+    //Method used to Parse the endDate and Increment the date according to the repCounter value.
     public String parseAndIncrementDate(String endDate, int addDays){
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -230,6 +237,7 @@ public class FetchTodayTaskService extends IntentService {
         return endDate;
     }
 
+    //Method used to check that whether the service alarm is ON or OFF.
     public static boolean isServiceAlarmOn(Context context){
         Intent i = FetchTodayTaskService.newIntent(context);
         PendingIntent pi = PendingIntent.
@@ -237,6 +245,7 @@ public class FetchTodayTaskService extends IntentService {
         return pi != null;
     }
 
+    //Method used to build the notification which will notify the user.
     private void sendNotification(Context context){
 
         Intent i = TaskHomeActivity.newIntent(context);

@@ -10,22 +10,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.example.android.learning2_4_6_8.R;
 import com.example.android.learning2_4_6_8.models.TaskData;
 import com.example.android.learning2_4_6_8.service.FetchTodayTaskService;
 import com.example.android.learning2_4_6_8.util.SharedPreferencesData;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 
 
 
@@ -34,7 +26,6 @@ public class TaskHomeActivity extends AppCompatActivity {
     private static final String TAG = "TaskHomeActivity";
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private List<TaskData> mTaskDatas;
 
     public static Intent newIntent(Context context){
         return new Intent(context,TaskHomeActivity.class);
@@ -68,11 +59,6 @@ public class TaskHomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(1).setText("All");
         mTabLayout.getTabAt(2).setText("Completed");
 
-//        Intent i = FetchTodayTaskService.newIntent(getApplicationContext());
-//        startService(i);
-//        FetchTodayTaskService.setServiceAlarm(getApplicationContext(),true);
-
-
     }
 
     @Override
@@ -87,7 +73,6 @@ public class TaskHomeActivity extends AppCompatActivity {
                     SharedPreferencesData.setPollingCheckBoxVal(getApplicationContext(),true);
                 }else{
                     SharedPreferencesData.setPollingCheckBoxVal(getApplicationContext(),false);
-
                 }
                 FetchTodayTaskService.setServiceAlarm(getApplicationContext(),shouldStartService);
                 invalidateOptionsMenu();

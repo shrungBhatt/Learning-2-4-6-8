@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#143642</color>
+    <color name="colorPrimaryDark">#A82014</color>
+    <color name="colorAccent">#A82014</color>
+    <color name="tabUnselectedColor">#98FB98</color>
+    <color name="colorYankeesBlue">#143642</color>
+    <color name="colorCarrotOrange">#EC9A29</color>
+    <color name="colorCornellRed">#A82014</color>
+
 </resources>

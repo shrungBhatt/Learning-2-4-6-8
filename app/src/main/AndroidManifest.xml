@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.learning2_4_6_8">
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name=".homeactivity.TaskHomeActivity">
+        <activity
+            android:name=".homeactivity.TaskHomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,12 +24,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AddTaskActivity"/>
+        <activity android:name=".AddTaskActivity" />
 
 
-        <service android:name=".service.PollService"/>
-
-        <service android:name=".service.FetchTodayTaskService"/>
+        <service android:name=".service.FetchTodayTaskService" />
 
     </application>
 

@@ -14,6 +14,7 @@ import com.example.android.learning2_4_6_8.R;
 import com.example.android.learning2_4_6_8.models.TaskData;
 import com.example.android.learning2_4_6_8.service.FetchTodayTaskService;
 import com.example.android.learning2_4_6_8.util.SharedPreferencesData;
+import com.example.android.learning2_4_6_8.util.Util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,7 +47,7 @@ public class TodayTaskFragment extends Fragment {
         String resultJson = SharedPreferencesData.getTaskArrayJson(getActivity());
 
         if(resultJson != null) {
-            mTaskDatas = FetchTodayTaskService.parseFetchedJson(resultJson);
+            mTaskDatas = Util.parseFetchedJson(resultJson);
             if (mTaskDatas != null) {
                 mRecyclerView.setAdapter(new TaskAdapter(mTaskDatas));
             } else {

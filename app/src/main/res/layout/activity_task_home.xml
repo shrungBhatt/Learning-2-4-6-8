@@ -11,13 +11,13 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/home_activity_tablayout"
+        style="@style/MyTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
         app:tabSelectedTextColor="@color/colorAccent"
         app:tabIndicatorColor="@color/colorAccent"/>
-
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="0dp"

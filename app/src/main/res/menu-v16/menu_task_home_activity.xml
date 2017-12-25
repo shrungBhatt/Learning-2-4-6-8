@@ -2,19 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <item
         android:id="@+id/menu_add_task"
         android:icon="@drawable/ic_menu_add_simple"
         android:title="Add Task"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="never"/>
 
 
     <item android:id="@+id/menu_polling_status_check_box"
         android:title="Polling"
-        android:icon="@android:drawable/ic_menu_preferences"
         android:orderInCategory="100"
         android:checkable="true"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="never"/>
 
 </menu>

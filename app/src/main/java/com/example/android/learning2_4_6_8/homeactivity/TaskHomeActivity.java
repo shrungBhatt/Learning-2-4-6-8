@@ -12,12 +12,10 @@ import android.view.MenuItem;
 
 
 import com.example.android.learning2_4_6_8.R;
-import com.example.android.learning2_4_6_8.models.TaskData;
 import com.example.android.learning2_4_6_8.service.FetchTodayTaskService;
 import com.example.android.learning2_4_6_8.util.SharedPreferencesData;
 
 
-import java.util.List;
 
 
 
@@ -55,7 +53,7 @@ public class TaskHomeActivity extends AppCompatActivity {
 
         mTabLayout.setupWithViewPager(mViewPager);
 
-        mTabLayout.getTabAt(0).setText("Today's");
+        mTabLayout.getTabAt(0).setText("Today");
         mTabLayout.getTabAt(1).setText("All");
         mTabLayout.getTabAt(2).setText("Completed");
 

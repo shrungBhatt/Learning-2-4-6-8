@@ -55,7 +55,7 @@ public class Util {
         return taskDatas;
     }
 
-    private void updateTaskData(List<TaskData> taskDatas, Context context, final String TAG){
+    public void updateTaskData(List<TaskData> taskDatas, Context context, final String TAG){
 
         for (int i = 0 ; i < taskDatas.size() ; i++) {
             String endDate = taskDatas.get(i).getmEndDate();

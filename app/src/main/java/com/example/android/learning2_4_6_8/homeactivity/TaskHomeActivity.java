@@ -12,11 +12,12 @@ import android.view.MenuItem;
 
 
 import com.example.android.learning2_4_6_8.R;
+import com.example.android.learning2_4_6_8.models.TaskData;
 import com.example.android.learning2_4_6_8.service.FetchTodayTaskService;
 import com.example.android.learning2_4_6_8.util.SharedPreferencesData;
+import com.example.android.learning2_4_6_8.util.Util;
 
-
-
+import java.util.List;
 
 
 public class TaskHomeActivity extends AppCompatActivity {
@@ -24,6 +25,8 @@ public class TaskHomeActivity extends AppCompatActivity {
     private static final String TAG = "TaskHomeActivity";
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
+
+    private List<TaskData> mTaskDatas;
 
     public static Intent newIntent(Context context){
         return new Intent(context,TaskHomeActivity.class);
@@ -56,6 +59,17 @@ public class TaskHomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(0).setText("Today");
         mTabLayout.getTabAt(1).setText("All");
         mTabLayout.getTabAt(2).setText("Completed");
+
+        if(SharedPreferencesData.isFlagUpdateTaskOn(getApplicationContext())){
+            Util util = new Util();
+            mTaskDatas = Util.
+                    parseFetchedJson(SharedPreferencesData.
+                            getTaskArrayJson(getApplicationContext()));
+            if(mTaskDatas.size() != 0) {
+                util.updateTaskData(mTaskDatas, getApplicationContext(), TAG);
+                SharedPreferencesData.setFlagUpdateTasks(getApplicationContext(), false);
+            }
+        }
 
     }
 

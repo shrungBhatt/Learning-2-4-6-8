@@ -58,7 +58,6 @@ public class FetchTodayTaskService extends IntentService {
         Log.e(TAG, "Alarm Manager called");
 
         fetchTaskData(this);//Fetch Task from the server.
-        sendNotification(getApplicationContext());//Notify the user.
     }
 
     //This method is used to set the service alarm on and off using a toggle button in TasKHomeActivity.java
@@ -108,8 +107,12 @@ public class FetchTodayTaskService extends IntentService {
                         Log.e(TAG, "Received json: " + response);
                         mTaskDatas = Util.parseFetchedJson(response);
                         SharedPreferencesData.setTaskArrayJson(context, response);
+                        if(mTaskDatas.size() != 0) {
+                            SharedPreferencesData.setFlagUpdateTasks(context, true);
+                        }
                         setmTotalTasks(mTaskDatas.size());
-//                        updateTaskData(mTaskDatas);
+                        sendNotification(getApplicationContext());//Notify the user.
+
                     }
                 },
                 new Response.ErrorListener() {

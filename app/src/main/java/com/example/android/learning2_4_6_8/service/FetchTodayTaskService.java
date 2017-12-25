@@ -19,21 +19,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.android.learning2_4_6_8.R;
 import com.example.android.learning2_4_6_8.homeactivity.TaskHomeActivity;
 import com.example.android.learning2_4_6_8.models.TaskData;
 import com.example.android.learning2_4_6_8.util.SharedPreferencesData;
 import com.example.android.learning2_4_6_8.util.Util;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +38,7 @@ import java.util.Map;
 public class FetchTodayTaskService extends IntentService {
 
     private List<TaskData> mTaskDatas;
+    private int mTotalTasks;
 
     private static final String TAG = "FetchTodayTaskService";
 
@@ -112,13 +108,14 @@ public class FetchTodayTaskService extends IntentService {
                         Log.e(TAG, "Received json: " + response);
                         mTaskDatas = Util.parseFetchedJson(response);
                         SharedPreferencesData.setTaskArrayJson(context, response);
+                        setmTotalTasks(mTaskDatas.size());
 //                        updateTaskData(mTaskDatas);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Volley Error: ", error.toString());
+                        Log.e(TAG, error.toString());
                     }
                 }) {
             @Override
@@ -152,8 +149,9 @@ public class FetchTodayTaskService extends IntentService {
 
         Notification notification = new NotificationCompat.Builder(context)
                 .setTicker("Today's Task's to Complete")
-                .setSmallIcon(android.R.drawable.ic_menu_info_details)
+                .setSmallIcon(R.drawable.ic_today_task)
                 .setContentTitle("Today's Task's to Complete")
+                .setContentText("Total tasks to complete: " + getmTotalTasks())
                 .setContentIntent(pi)
                 .setAutoCancel(true)
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
@@ -172,5 +170,13 @@ public class FetchTodayTaskService extends IntentService {
         boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
 
         return (isNetworkAvailable && cm.getActiveNetworkInfo().isConnected());
+    }
+
+    public int getmTotalTasks() {
+        return mTotalTasks;
+    }
+
+    public void setmTotalTasks(int mTotalTasks) {
+        this.mTotalTasks = mTotalTasks;
     }
 }

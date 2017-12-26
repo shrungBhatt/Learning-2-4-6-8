@@ -39,6 +39,9 @@ public class TaskHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_home);
 
 
+
+
+        Log.i(TAG,"The mac address of the device is: " + Util.getMacAddress(TAG));
         mTabLayout = findViewById(R.id.home_activity_tablayout);
 
         mViewPager = findViewById(R.id.home_activity_viewpager);

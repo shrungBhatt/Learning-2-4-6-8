@@ -16,10 +16,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.NetworkInterface;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,13 +31,13 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class Util {
 
-    public static List<TaskData> parseFetchedJson(String result){
+    public static List<TaskData> parseFetchedJson(String result) {
 
         List<TaskData> taskDatas = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(result);
 
-            for(int i=0 ; i<jsonArray.length() ; i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
 
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -56,26 +58,26 @@ public class Util {
         return taskDatas;
     }
 
-    public void updateTaskData(List<TaskData> taskDatas, Context context, final String TAG){
+    public void updateTaskData(List<TaskData> taskDatas, Context context, final String TAG) {
 
-        for (int i = 0 ; i < taskDatas.size() ; i++) {
+        for (int i = 0; i < taskDatas.size(); i++) {
             String endDate = taskDatas.get(i).getmEndDate();
             int repCounter = taskDatas.get(i).getmRepCounter();
             final int id = taskDatas.get(i).getmId();
 
             switch (repCounter) {
                 case 1:
-                    endDate = parseAndIncrementDate(endDate,4);
+                    endDate = parseAndIncrementDate(endDate, 4);
                     repCounter++;
                     break;
 
                 case 2:
-                    endDate = parseAndIncrementDate(endDate,6);
+                    endDate = parseAndIncrementDate(endDate, 6);
                     repCounter++;
                     break;
 
                 case 3:
-                    endDate = parseAndIncrementDate(endDate,8);
+                    endDate = parseAndIncrementDate(endDate, 8);
                     repCounter++;
                     break;
             }
@@ -89,22 +91,22 @@ public class Util {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.i(TAG,response);
+                            Log.i(TAG, response);
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.e(TAG,"Volley Error (PollService): " + error.toString());
+                            Log.e(TAG, "Volley Error (PollService): " + error.toString());
                         }
                     }) {
 
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("end_date",finalEndDate);
-                    params.put("rep_counter",String.valueOf(finalRepCounter));
-                    params.put("id",String.valueOf(id));
+                    params.put("end_date", finalEndDate);
+                    params.put("rep_counter", String.valueOf(finalRepCounter));
+                    params.put("id", String.valueOf(id));
                     return params;
                 }
 
@@ -114,7 +116,7 @@ public class Util {
         }
     }
 
-    private String parseAndIncrementDate(String endDate, int addDays){
+    private String parseAndIncrementDate(String endDate, int addDays) {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Calendar calendar = Calendar.getInstance();
@@ -136,5 +138,32 @@ public class Util {
         boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
 
         return (isNetworkAvailable && cm.getActiveNetworkInfo().isConnected());
+    }
+
+    public static String getMacAddress(String TAG) {
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(String.format("%02X:", b));
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "Exception" + ex);
+        }
+        return "02:00:00:00:00:00";
     }
 }

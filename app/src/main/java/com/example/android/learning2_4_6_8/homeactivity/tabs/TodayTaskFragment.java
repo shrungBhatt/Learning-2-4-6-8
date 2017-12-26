@@ -62,13 +62,17 @@ public class TodayTaskFragment extends Fragment {
         private TextView mTaskContentTextView;
 
         TaskHolder(LayoutInflater layoutInflater, ViewGroup container) {
-            super(layoutInflater.inflate(R.layout.list_item_today_task, container, false));
+            super(layoutInflater.
+                    inflate(R.layout.list_item_today_task, container, false));
 
-            mTaskHeaderTextView = itemView.findViewById(R.id.list_item_today_task_header_text_view);
+            mTaskHeaderTextView = itemView.
+                    findViewById(R.id.list_item_today_task_header_text_view);
 
-            mTaskContentTextView = itemView.findViewById(R.id.list_item_today_task_content_text_view);
+            mTaskContentTextView = itemView.
+                    findViewById(R.id.list_item_today_task_content_text_view);
 
-            mRepCounterTextView = itemView.findViewById(R.id.list_item_today_rep_counter_text_view);
+            mRepCounterTextView = itemView.
+                    findViewById(R.id.list_item_today_rep_counter_text_view);
 
         }
 

@@ -114,6 +114,14 @@ public class FetchTodayTaskService extends IntentService {
                         Log.i(TAG,String.valueOf(getmTotalTasks()));
                         sendNotification(getApplicationContext());//Notify the user.
 
+
+                        Util util = new Util();
+                        if(mTaskDatas.size() != 0) {
+                            util.updateTaskData(mTaskDatas, getApplicationContext(), TAG);
+                            SharedPreferencesData.
+                                    setFlagUpdateTasks(getApplicationContext(), false);
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {

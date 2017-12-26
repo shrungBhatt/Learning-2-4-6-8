@@ -60,16 +60,6 @@ public class TaskHomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(1).setText("All");
         mTabLayout.getTabAt(2).setText("Completed");
 
-        if(SharedPreferencesData.isFlagUpdateTaskOn(getApplicationContext())){
-            Util util = new Util();
-            mTaskDatas = Util.
-                    parseFetchedJson(SharedPreferencesData.
-                            getTaskArrayJson(getApplicationContext()));
-            if(mTaskDatas.size() != 0) {
-                util.updateTaskData(mTaskDatas, getApplicationContext(), TAG);
-                SharedPreferencesData.setFlagUpdateTasks(getApplicationContext(), false);
-            }
-        }
 
     }
 

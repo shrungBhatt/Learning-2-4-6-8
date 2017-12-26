@@ -63,8 +63,13 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 String taskContent = mAddTaskContentEditText.getText().toString().trim();
 
-                addTask(startDate, endDate, taskHeader, taskContent, String.valueOf(daysCounter)
-                        .trim());
+                if(!taskHeader.equals("") && !taskContent.equals("")) {
+                    addTask(startDate, endDate, taskHeader, taskContent, String.valueOf(daysCounter)
+                            .trim());
+                }else{
+                    Toast.makeText(getApplicationContext(),"Enter all the details",
+                            Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

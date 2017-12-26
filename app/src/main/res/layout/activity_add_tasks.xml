@@ -21,7 +21,6 @@
         android:id="@+id/add_task_header_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
         android:hint="Title"
         android:singleLine="true"
         android:textSize="20sp"
@@ -47,11 +46,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="8dp"
+        android:layout_margin="16dp"
         android:clickable="true"
         android:src="@drawable/fab_add_icon"
         app:backgroundTint="@color/colorPrimary"
-        app:elevation="4dp"
+        app:elevation="8dp"
         app:fabSize="auto"
         tools:targetApi="lollipop" />
 

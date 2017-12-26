@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
+import com.example.android.learning2_4_6_8.AddTaskActivity;
 import com.example.android.learning2_4_6_8.R;
 import com.example.android.learning2_4_6_8.models.TaskData;
 import com.example.android.learning2_4_6_8.service.FetchTodayTaskService;
@@ -67,7 +68,10 @@ public class TaskHomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_add_task:
+                Intent intent = new Intent(getApplicationContext(),AddTaskActivity.class);
+                startActivity(intent);
                 return true;
+
             case R.id.menu_polling_status_check_box:
                 boolean shouldStartService =
                         !FetchTodayTaskService.isServiceAlarmOn(getApplicationContext());
@@ -79,6 +83,7 @@ public class TaskHomeActivity extends AppCompatActivity {
                 FetchTodayTaskService.setServiceAlarm(getApplicationContext(),shouldStartService);
                 invalidateOptionsMenu();
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

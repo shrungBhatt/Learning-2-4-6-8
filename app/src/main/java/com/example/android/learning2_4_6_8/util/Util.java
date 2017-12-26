@@ -44,6 +44,7 @@ public class Util {
                 taskData.setmId(Integer.valueOf(jsonObject.getString("id")));
                 taskData.setmStartDate(jsonObject.getString("start_date"));
                 taskData.setmEndDate(jsonObject.getString("end_date"));
+                taskData.setmTaskHeader(jsonObject.getString("task_header"));
                 taskData.setmTaskContent(jsonObject.getString("task_content"));
                 taskData.setmRepCounter(Integer.valueOf(jsonObject.getString("rep_counter")));
 

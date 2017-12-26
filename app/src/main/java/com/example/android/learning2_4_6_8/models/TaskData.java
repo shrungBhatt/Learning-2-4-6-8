@@ -9,6 +9,7 @@ public class TaskData {
     private String mStartDate;
     private String mEndDate;
     private String mTaskContent;
+    private String mTaskHeader;
     private int mRepCounter;
     private List<TaskData> mTaskDatas;
 
@@ -50,6 +51,14 @@ public class TaskData {
 
     public void setmRepCounter(int mRepCounter) {
         this.mRepCounter = mRepCounter;
+    }
+
+    public String getmTaskHeader() {
+        return mTaskHeader;
+    }
+
+    public void setmTaskHeader(String mTaskHeader) {
+        this.mTaskHeader = mTaskHeader;
     }
 
     public List<TaskData> getmTaskDatas() {

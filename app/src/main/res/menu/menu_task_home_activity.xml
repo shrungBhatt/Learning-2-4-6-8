@@ -15,6 +15,6 @@
         android:icon="@android:drawable/ic_menu_preferences"
         android:orderInCategory="100"
         android:checkable="true"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="never"/>
 
 </menu>

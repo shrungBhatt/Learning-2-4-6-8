@@ -3,16 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="4dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <EditText
+    <!--<EditText
         android:id="@+id/add_task_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textStyle="italic"
-        android:hint="@string/add_task" />
+        android:hint="@string/add_task" />-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="4dp">
+    <EditText
+        android:id="@+id/add_task_header_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:hint="Title"
+        android:singleLine="true"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/add_task_content_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="12dp"
+        android:background="@android:color/transparent"
+        android:gravity="top|start"
+        android:hint="Contents"
+        android:inputType="textMultiLine"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical"
+        android:textColor="@android:color/black"/>
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_task_fab_button"
@@ -21,7 +49,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="8dp"
         android:clickable="true"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/fab_add_icon"
         app:backgroundTint="@color/colorPrimary"
         app:elevation="4dp"
         app:fabSize="auto"

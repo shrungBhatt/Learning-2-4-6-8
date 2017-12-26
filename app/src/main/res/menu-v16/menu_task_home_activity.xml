@@ -6,7 +6,7 @@
         android:id="@+id/menu_add_task"
         android:icon="@drawable/ic_menu_add_simple"
         android:title="Add Task"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom|withText"/>
 
 
     <item android:id="@+id/menu_polling_status_check_box"

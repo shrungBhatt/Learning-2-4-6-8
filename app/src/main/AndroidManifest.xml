@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AddTaskActivity" />
+        <activity android:name=".AddTaskActivity"
+            android:parentActivityName=".homeactivity.TaskHomeActivity"/>
 
 
         <service android:name=".service.FetchTodayTaskService" />

@@ -57,7 +57,7 @@ public class FetchTodayTaskService extends IntentService {
         Log.i(TAG, "Received Intent: " + intent);
         Log.i(TAG, "Alarm Manager called");
 
-        fetchTaskData(this);//Fetch Task from the server.
+        fetchTaskData(getApplicationContext());//Fetch Task from the server.
     }
 
     //This method is used to set the service alarm on and off using a toggle button in TasKHomeActivity.java

@@ -54,8 +54,8 @@ public class FetchTodayTaskService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.e(TAG, "Received Intent: " + intent);
-        Log.e(TAG, "Alarm Manager called");
+        Log.i(TAG, "Received Intent: " + intent);
+        Log.i(TAG, "Alarm Manager called");
 
         fetchTaskData(this);//Fetch Task from the server.
     }
@@ -74,6 +74,7 @@ public class FetchTodayTaskService extends IntentService {
         long triggerTime = cal.getTimeInMillis();
         if (cal.before(Calendar.getInstance())) {
             triggerTime += AlarmManager.INTERVAL_DAY;
+            Log.i(TAG,"Trigger time has already passed");
         }
 
         //Create a pending Intent for the AlarmManager.
@@ -104,13 +105,13 @@ public class FetchTodayTaskService extends IntentService {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e(TAG, "Received json: " + response);
                         mTaskDatas = Util.parseFetchedJson(response);
                         SharedPreferencesData.setTaskArrayJson(context, response);
                         if(mTaskDatas.size() != 0) {
                             SharedPreferencesData.setFlagUpdateTasks(context, true);
                         }
                         setmTotalTasks(mTaskDatas.size());
+                        Log.i(TAG,String.valueOf(getmTotalTasks()));
                         sendNotification(getApplicationContext());//Notify the user.
 
                     }
@@ -151,9 +152,9 @@ public class FetchTodayTaskService extends IntentService {
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
         Notification notification = new NotificationCompat.Builder(context)
-                .setTicker("Today's Task's to Complete")
+                .setTicker("Today's Task's")
                 .setSmallIcon(R.drawable.ic_today_task)
-                .setContentTitle("Today's Task's to Complete")
+                .setContentTitle("Today's Task's To Complete")
                 .setContentText("Total tasks to complete: " + getmTotalTasks())
                 .setContentIntent(pi)
                 .setAutoCancel(true)

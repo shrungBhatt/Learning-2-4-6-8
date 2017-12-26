@@ -88,7 +88,7 @@ public class Util {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.e(TAG,response);
+                            Log.i(TAG,response);
                         }
                     },
                     new Response.ErrorListener() {

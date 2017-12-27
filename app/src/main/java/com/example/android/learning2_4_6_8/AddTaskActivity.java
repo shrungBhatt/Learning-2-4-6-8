@@ -1,5 +1,6 @@
 package com.example.android.learning2_4_6_8;
 
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -63,15 +64,22 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 String taskContent = mAddTaskContentEditText.getText().toString().trim();
 
-                if(!taskHeader.equals("") && !taskContent.equals("")) {
-                    addTask(startDate, endDate, taskHeader, taskContent, String.valueOf(daysCounter)
-                            .trim());
-                }else{
-                    Toast.makeText(getApplicationContext(),"Enter all the details",
+
+                if (!taskHeader.equals("") && !taskContent.equals("")) {
+                    if (isNetworkAvailableAndConnected()) {
+                        addTask(startDate, endDate, taskHeader, taskContent,
+                                String.valueOf(daysCounter).trim());
+                    } else {
+                        Toast.makeText(AddTaskActivity.this,
+                                "Internet Connection Not Available", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Enter all the details",
                             Toast.LENGTH_SHORT).show();
                 }
-
             }
+
+
         });
     }
 
@@ -103,7 +111,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 params.put("start_date", startDate);
                 params.put("end_date", endDate);
                 params.put("task_content", taskContent);
-                params.put("task_header",taskHeader);
+                params.put("task_header", taskHeader);
                 params.put("rep_counter", repCounter);
                 return params;
             }
@@ -112,6 +120,14 @@ public class AddTaskActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);
+    }
+
+    private boolean isNetworkAvailableAndConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+
+        boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
+
+        return (isNetworkAvailable && cm.getActiveNetworkInfo().isConnected());
     }
 
 }

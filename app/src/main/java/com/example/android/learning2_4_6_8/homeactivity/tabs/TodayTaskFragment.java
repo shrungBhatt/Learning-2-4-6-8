@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.learning2_4_6_8.R;
@@ -24,6 +25,8 @@ public class TodayTaskFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private List<TaskData> mTaskDatas;
+    private TextView mTaskToDoStatusTextView;
+    private ImageView mTaskNoTaskImageView;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container,
@@ -31,16 +34,19 @@ public class TodayTaskFragment extends Fragment {
         View v = layoutInflater.inflate(R.layout.tab_today_tasks,container,false);
 
 
+
         mRecyclerView = v.findViewById(R.id.tab_today_tasks_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
 
+        mTaskToDoStatusTextView = v.findViewById(R.id.tab_today_tasks_no_task_text_view);
+        mTaskNoTaskImageView = v.findViewById(R.id.tab_today_task_no_task_image_view);
 
 
         String resultJson = SharedPreferencesData.getTaskArrayJson(getActivity());
 
-        if(resultJson != null) {
+        if(!resultJson.equals("null")) {
             mTaskDatas = Util.parseFetchedJson(resultJson);
             if (mTaskDatas != null) {
                 mRecyclerView.setAdapter(new TaskAdapter(mTaskDatas));
@@ -48,6 +54,9 @@ public class TodayTaskFragment extends Fragment {
                 Log.e(TAG, "mTaskDatas is empty");
             }
         }else{
+            mRecyclerView.setVisibility(View.INVISIBLE);
+            mTaskToDoStatusTextView.setVisibility(View.VISIBLE);
+            mTaskNoTaskImageView.setVisibility(View.VISIBLE);
             Log.e(TAG,"resultJson is null");
         }
 

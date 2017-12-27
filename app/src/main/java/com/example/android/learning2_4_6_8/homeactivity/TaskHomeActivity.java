@@ -57,6 +57,8 @@ public class TaskHomeActivity extends AppCompatActivity {
                 getSupportFragmentManager(),mTabLayout.getTabCount());
 
         mViewPager.setAdapter(viewPagerAdapter);
+        mViewPager.setOffscreenPageLimit(2);
+
 
         mTabLayout.setupWithViewPager(mViewPager);
 

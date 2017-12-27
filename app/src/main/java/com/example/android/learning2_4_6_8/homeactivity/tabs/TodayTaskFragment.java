@@ -1,5 +1,6 @@
 package com.example.android.learning2_4_6_8.homeactivity.tabs;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,7 +50,7 @@ public class TodayTaskFragment extends Fragment {
         if(!resultJson.equals("null")) {
             mTaskDatas = Util.parseFetchedJson(resultJson);
             if (mTaskDatas != null) {
-                mRecyclerView.setAdapter(new TaskAdapter(mTaskDatas));
+                mRecyclerView.setAdapter(new TodayTaskAdapter(mTaskDatas));
             } else {
                 Log.e(TAG, "mTaskDatas is empty");
             }
@@ -65,12 +66,12 @@ public class TodayTaskFragment extends Fragment {
     }
 
 
-    private class TaskHolder extends RecyclerView.ViewHolder {
+    private class TodayTaskHolder extends RecyclerView.ViewHolder {
         private TextView mTaskHeaderTextView;
         private TextView mRepCounterTextView;
         private TextView mTaskContentTextView;
 
-        TaskHolder(LayoutInflater layoutInflater, ViewGroup container) {
+        TodayTaskHolder(LayoutInflater layoutInflater, ViewGroup container) {
             super(layoutInflater.
                     inflate(R.layout.list_item_today_task, container, false));
 
@@ -85,7 +86,7 @@ public class TodayTaskFragment extends Fragment {
 
         }
 
-        void bindTaskData(TaskData taskData){
+        void bindTodayTaskData(TaskData taskData){
 
             mTaskHeaderTextView.setText(taskData.getmTaskHeader());
             mTaskContentTextView.setText(taskData.getmTaskContent());
@@ -95,24 +96,24 @@ public class TodayTaskFragment extends Fragment {
 
     }
 
-    private class TaskAdapter extends RecyclerView.Adapter<TaskHolder> {
+    private class TodayTaskAdapter extends RecyclerView.Adapter<TodayTaskHolder> {
 
         private List<TaskData> mTaskDatas;
 
-        TaskAdapter(List<TaskData> taskDatas) {
+        TodayTaskAdapter(List<TaskData> taskDatas) {
             mTaskDatas = taskDatas;
         }
 
         @Override
-        public TaskHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public TodayTaskHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
-            return new TaskHolder(inflater, parent);
+            return new TodayTaskHolder(inflater, parent);
         }
 
         @Override
-        public void onBindViewHolder(TaskHolder holder, int position) {
+        public void onBindViewHolder(TodayTaskHolder holder, int position) {
             TaskData taskData = mTaskDatas.get(position);
-            holder.bindTaskData(taskData);
+            holder.bindTodayTaskData(taskData);
 
         }
 
@@ -121,5 +122,7 @@ public class TodayTaskFragment extends Fragment {
             return mTaskDatas.size();
         }
     }
+
+
 
 }

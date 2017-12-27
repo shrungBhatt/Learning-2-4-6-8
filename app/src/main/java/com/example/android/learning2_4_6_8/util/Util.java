@@ -60,8 +60,13 @@ public class Util {
 
     public void updateTaskData(List<TaskData> taskDatas, Context context, final String TAG) {
 
+        boolean mCase4Flag = false;
+
         for (int i = 0; i < taskDatas.size(); i++) {
+            String startDate = taskDatas.get(i).getmStartDate();
             String endDate = taskDatas.get(i).getmEndDate();
+            String taskHeader = taskDatas.get(i).getmTaskHeader();
+            String taskContent = taskDatas.get(i).getmTaskContent();
             int repCounter = taskDatas.get(i).getmRepCounter();
             final int id = taskDatas.get(i).getmId();
 
@@ -80,40 +85,129 @@ public class Util {
                     endDate = parseAndIncrementDate(endDate, 8);
                     repCounter++;
                     break;
+
+                case 4:
+                    mCase4Flag = true;
+                    addCompletedTask(context,TAG,startDate,endDate,taskHeader,taskContent);
+                    deleteCompletedTask(context,TAG,id);
+                    break;
             }
 
             final String finalEndDate = endDate;
 
             final int finalRepCounter = repCounter;
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                    "http://ersnexus.esy.es/update_task_data.php",
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.i(TAG, response);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.e(TAG, "Volley Error (PollService): " + error.toString());
-                        }
-                    }) {
+            if(!mCase4Flag){
+                updateTask(context,TAG,finalEndDate,finalRepCounter,id);
+            }
 
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("end_date", finalEndDate);
-                    params.put("rep_counter", String.valueOf(finalRepCounter));
-                    params.put("id", String.valueOf(id));
-                    return params;
-                }
 
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(context);
-            requestQueue.add(stringRequest);
         }
+    }
+
+    private void updateTask(Context context,final String TAG,
+                            final String endDate,final int repCounter,
+                            final int id){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                "http://ersnexus.esy.es/update_task_data.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i(TAG, response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, "Volley Error (PollService): " + error.toString());
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("end_date", endDate);
+                params.put("rep_counter", String.valueOf(repCounter));
+                params.put("id", String.valueOf(id));
+                return params;
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+
+    }
+
+    private void addCompletedTask(Context context, final String TAG, final String startDate,
+                                  final String endDate, final String taskHeader,
+                                  final String taskContent) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                "http://ersnexus.esy.es/add_completed_tasks",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Volley Error occurred while adding completed task" +
+                        error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("start_date", startDate);
+                params.put("end_date", endDate);
+                params.put("task_content", taskContent);
+                params.put("task_header", taskHeader);
+                return params;
+            }
+
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+
+
+    }
+
+
+    private void deleteCompletedTask(Context context, final String TAG,final int id) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                "http://ersnexus.esy.es/delete_completed_tasks",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Volley Error occurred while adding completed task" +
+                        error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", String.valueOf(id));
+
+                return params;
+            }
+
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+
+
     }
 
     private String parseAndIncrementDate(String endDate, int addDays) {

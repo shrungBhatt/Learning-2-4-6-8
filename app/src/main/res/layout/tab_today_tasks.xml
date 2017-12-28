@@ -28,7 +28,7 @@
             android:id="@+id/tab_today_tasks_no_task_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Tasks Today"
+            android:text="Nothing To Do"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
             android:textStyle="bold"

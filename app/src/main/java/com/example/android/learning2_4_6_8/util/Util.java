@@ -1,7 +1,8 @@
 package com.example.android.learning2_4_6_8.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.ConnectivityManager;
+//import android.net.ConnectivityManager;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -26,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.content.Context.CONNECTIVITY_SERVICE;
+//import static android.content.Context.CONNECTIVITY_SERVICE;
 
 
 public class Util {
@@ -60,7 +61,6 @@ public class Util {
 
     public void updateTaskData(List<TaskData> taskDatas, Context context, final String TAG) {
 
-        boolean mCase4Flag = false;
 
         for (int i = 0; i < taskDatas.size(); i++) {
             String startDate = taskDatas.get(i).getmStartDate();
@@ -69,6 +69,8 @@ public class Util {
             String taskContent = taskDatas.get(i).getmTaskContent();
             int repCounter = taskDatas.get(i).getmRepCounter();
             final int id = taskDatas.get(i).getmId();
+            boolean mCase4Flag = false;
+
 
             switch (repCounter) {
                 case 1:
@@ -88,8 +90,8 @@ public class Util {
 
                 case 4:
                     mCase4Flag = true;
-                    addCompletedTask(context,TAG,startDate,endDate,taskHeader,taskContent);
-                    deleteCompletedTask(context,TAG,id);
+                    addCompletedTask(context, TAG, startDate, endDate, taskHeader, taskContent);
+                    deleteCompletedTask(context, TAG, id);
                     break;
             }
 
@@ -97,17 +99,17 @@ public class Util {
 
             final int finalRepCounter = repCounter;
 
-            if(!mCase4Flag){
-                updateTask(context,TAG,finalEndDate,finalRepCounter,id);
+            if (!mCase4Flag) {
+                updateTask(context, TAG, finalEndDate, finalRepCounter, id);
             }
 
 
         }
     }
 
-    private void updateTask(Context context,final String TAG,
-                            final String endDate,final int repCounter,
-                            final int id){
+    private void updateTask(Context context, final String TAG,
+                            final String endDate, final int repCounter,
+                            final int id) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 "http://ersnexus.esy.es/update_task_data.php",
@@ -144,11 +146,11 @@ public class Util {
                                   final String taskContent) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                "http://ersnexus.esy.es/add_completed_tasks",
+                "http://ersnexus.esy.es/add_completed_tasks.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        Log.i(TAG,response);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -177,13 +179,14 @@ public class Util {
     }
 
 
-    private void deleteCompletedTask(Context context, final String TAG,final int id) {
+    private void deleteCompletedTask(Context context, final String TAG, final int id) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                "http://ersnexus.esy.es/delete_completed_tasks",
+                "http://ersnexus.esy.es/delete_completed_task.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.i(TAG,response);
 
                     }
                 }, new Response.ErrorListener() {
@@ -197,7 +200,6 @@ public class Util {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("id", String.valueOf(id));
-
                 return params;
             }
 
@@ -212,7 +214,8 @@ public class Util {
 
     private String parseAndIncrementDate(String endDate, int addDays) {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat =
+                new SimpleDateFormat("dd-MM-yyyy");
         Calendar calendar = Calendar.getInstance();
 
         try {
@@ -227,12 +230,12 @@ public class Util {
     }
 
 
-    public static boolean isNetworkAvailableAndConnected(ConnectivityManager cm) {
+    /*public static boolean isNetworkAvailableAndConnected(ConnectivityManager cm) {
 
         boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
 
         return (isNetworkAvailable && cm.getActiveNetworkInfo().isConnected());
-    }
+    }*/
 
     public static String getMacAddress(String TAG) {
         try {

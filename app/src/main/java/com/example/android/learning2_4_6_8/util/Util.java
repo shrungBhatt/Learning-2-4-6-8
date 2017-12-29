@@ -61,8 +61,8 @@ public class Util {
 
     public void updateTaskData(List<TaskData> taskDatas, Context context, final String TAG) {
 
-
         for (int i = 0; i < taskDatas.size(); i++) {
+
             String startDate = taskDatas.get(i).getmStartDate();
             String endDate = taskDatas.get(i).getmEndDate();
             String taskHeader = taskDatas.get(i).getmTaskHeader();
@@ -70,7 +70,6 @@ public class Util {
             int repCounter = taskDatas.get(i).getmRepCounter();
             final int id = taskDatas.get(i).getmId();
             boolean mCase4Flag = false;
-
 
             switch (repCounter) {
                 case 1:
@@ -102,8 +101,6 @@ public class Util {
             if (!mCase4Flag) {
                 updateTask(context, TAG, finalEndDate, finalRepCounter, id);
             }
-
-
         }
     }
 
@@ -150,7 +147,7 @@ public class Util {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG,response);
+                        Log.i(TAG, response);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -186,7 +183,7 @@ public class Util {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG,response);
+                        Log.i(TAG, response);
 
                     }
                 }, new Response.ErrorListener() {

@@ -118,7 +118,7 @@ public class AddTaskActivity extends AppCompatActivity {
         };
 
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(AddTaskActivity.this);
         requestQueue.add(stringRequest);
     }
 

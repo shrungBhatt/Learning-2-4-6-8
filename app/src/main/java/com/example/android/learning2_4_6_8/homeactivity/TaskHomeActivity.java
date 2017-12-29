@@ -29,6 +29,8 @@ public class TaskHomeActivity extends AppCompatActivity {
 
     private List<TaskData> mTaskDatas;
 
+    private Context mContext;
+
     public static Intent newIntent(Context context){
         return new Intent(context,TaskHomeActivity.class);
     }
@@ -39,6 +41,7 @@ public class TaskHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_home);
 
 
+        mContext = TaskHomeActivity.this;
 
 
         Log.i(TAG,"The mac address of the device is: " + Util.getMacAddress(TAG));
@@ -73,19 +76,20 @@ public class TaskHomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_add_task:
-                Intent intent = new Intent(getApplicationContext(),AddTaskActivity.class);
+                Intent intent = new Intent(mContext,AddTaskActivity.class);
                 startActivity(intent);
                 return true;
 
             case R.id.menu_polling_status_check_box:
                 boolean shouldStartService =
-                        !FetchTodayTaskService.isServiceAlarmOn(getApplicationContext());
+                        !FetchTodayTaskService.isServiceAlarmOn(mContext);
                 if(shouldStartService){
-                    SharedPreferencesData.setPollingCheckBoxVal(getApplicationContext(),true);
+                    SharedPreferencesData.setPollingCheckBoxVal(mContext,true);
                 }else{
-                    SharedPreferencesData.setPollingCheckBoxVal(getApplicationContext(),false);
+                    SharedPreferencesData.setPollingCheckBoxVal(mContext,false);
                 }
-                FetchTodayTaskService.setServiceAlarm(getApplicationContext(),shouldStartService);
+                FetchTodayTaskService.
+                        setServiceAlarm(mContext,shouldStartService);
                 invalidateOptionsMenu();
                 return true;
 
@@ -101,7 +105,7 @@ public class TaskHomeActivity extends AppCompatActivity {
 
 
         MenuItem pollingCheckBox = menu.findItem(R.id.menu_polling_status_check_box);
-        if(SharedPreferencesData.isPollingCheckBoxChecked(getApplicationContext())){
+        if(SharedPreferencesData.isPollingCheckBoxChecked(mContext)){
             pollingCheckBox.setChecked(true);
         }else{
             pollingCheckBox.setChecked(false);

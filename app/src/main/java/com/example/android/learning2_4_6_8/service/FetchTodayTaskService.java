@@ -57,8 +57,9 @@ public class FetchTodayTaskService extends IntentService {
         Log.i(TAG, "Received Intent: " + intent);
         Log.i(TAG, "Alarm Manager called");
 
-        fetchTaskData(this);//Fetch Task from the server.
+        fetchTaskData(FetchTodayTaskService.this);//Fetch Task from the server.
     }
+
 
     //This method is used to set the service alarm on and off using a toggle button in TasKHomeActivity.java
     public static void setServiceAlarm(Context context, boolean isOn) {
@@ -74,7 +75,7 @@ public class FetchTodayTaskService extends IntentService {
         long triggerTime = cal.getTimeInMillis();
         if (cal.before(Calendar.getInstance())) {
             triggerTime += AlarmManager.INTERVAL_DAY;
-            Log.i(TAG,"Trigger time has already passed");
+            Log.i(TAG, "Trigger time has already passed");
         }
 
         //Create a pending Intent for the AlarmManager.
@@ -97,6 +98,7 @@ public class FetchTodayTaskService extends IntentService {
     //Method used to fetch the current days task from the server.
     public void fetchTaskData(final Context context) {
 
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         final String currentDate = sdf.format(new Date()).trim();
 
@@ -107,20 +109,16 @@ public class FetchTodayTaskService extends IntentService {
                     public void onResponse(String response) {
                         mTaskDatas = Util.parseFetchedJson(response);
                         SharedPreferencesData.setTaskArrayJson(context, response);
-                        if(mTaskDatas.size() != 0) {
-                            SharedPreferencesData.setFlagUpdateTasks(context, true);
-                        }
+
                         setmTotalTasks(mTaskDatas.size());
-                        Log.i(TAG,String.valueOf(getmTotalTasks()));
-                        sendNotification(getApplicationContext());//Notify the user.
+                        Log.i(TAG, String.valueOf(getmTotalTasks()));
+                        sendNotification(FetchTodayTaskService.this);//Notify the user.
 
 
                         Util util = new Util();
-                        if(mTaskDatas.size() != 0) {
+                        if (mTaskDatas.size() != 0) {
                             util.updateTaskData(mTaskDatas,
                                     FetchTodayTaskService.this, TAG);
-                            SharedPreferencesData.
-                                    setFlagUpdateTasks(getApplicationContext(), false);
                         }
 
                     }

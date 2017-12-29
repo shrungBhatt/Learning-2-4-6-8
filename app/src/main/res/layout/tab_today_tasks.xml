@@ -18,18 +18,18 @@
 
         <ImageView
             android:id="@+id/tab_today_task_no_task_image_view"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:visibility="gone"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/no_task_baby_smile"/>
+            android:src="@drawable/nothing_to_do_image"/>
 
         <TextView
             android:id="@+id/tab_today_tasks_no_task_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nothing To Do"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorAccent"
             android:textSize="20sp"
             android:textStyle="bold"
             android:visibility="gone" />

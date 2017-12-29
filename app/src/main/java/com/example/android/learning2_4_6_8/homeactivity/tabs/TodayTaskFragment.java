@@ -46,6 +46,9 @@ public class TodayTaskFragment extends Fragment {
 
 
         String resultJson = SharedPreferencesData.getTaskArrayJson(getActivity());
+        if(resultJson == null){
+            resultJson = "null";
+        }
 
         if(!resultJson.equals("null")) {
             mTaskDatas = Util.parseFetchedJson(resultJson);

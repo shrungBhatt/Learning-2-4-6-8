@@ -1,6 +1,5 @@
 package com.example.android.learning2_4_6_8.homeactivity.tabs;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -76,7 +75,7 @@ public class TodayTaskFragment extends Fragment {
 
         TodayTaskHolder(LayoutInflater layoutInflater, ViewGroup container) {
             super(layoutInflater.
-                    inflate(R.layout.list_item_today_task, container, false));
+                    inflate(R.layout.list_item_today_task_recycler_view, container, false));
 
             mTaskHeaderTextView = itemView.
                     findViewById(R.id.list_item_today_task_header_text_view);

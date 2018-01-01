@@ -98,6 +98,7 @@ public class FetchTodayTaskService extends IntentService {
     //Method used to fetch the current days task from the server.
     public void fetchTaskData(final Context context) {
 
+        Log.i(TAG,"fethcTaskData method called");
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         final String currentDate = sdf.format(new Date()).trim();

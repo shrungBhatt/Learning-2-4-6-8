@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Learning/2-4-6-8</string>
     <string name="add_task">Add Task</string>
+    <string name="nothing_to_do">Nothing To Do</string>
 </resources>

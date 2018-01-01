@@ -109,7 +109,7 @@ public class AllTaskFragment extends Fragment {
         }
     }
 
-    public List<TaskData> fetchAllTasks(Context context, final String TAG) {
+    private void fetchAllTasks(Context context, final String TAG) {
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
@@ -135,7 +135,6 @@ public class AllTaskFragment extends Fragment {
         requestQueue.add(stringRequest);
 
 
-        return mTaskDatas;
     }
 
 }

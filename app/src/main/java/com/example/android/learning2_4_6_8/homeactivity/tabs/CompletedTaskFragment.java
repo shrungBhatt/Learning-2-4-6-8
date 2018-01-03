@@ -115,7 +115,7 @@ public class CompletedTaskFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         mTaskDatas = Util.parseFetchedJson(response);
-                        if(mTaskDatas.size() !=0 ){
+                        if(mTaskDatas.size() != 0 ){
                             mCompletedTaskRecyclerView.
                                     setAdapter(new CompletedTaskAdapter(mTaskDatas));
                         }
@@ -124,7 +124,7 @@ public class CompletedTaskFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "error occurred in CompletedTaskFragment volley Request" +
+                Log.e(TAG, "Error occurred in CompletedTaskFragment volley Request" +
                         error.toString());
             }
         });

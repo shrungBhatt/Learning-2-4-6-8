@@ -44,12 +44,12 @@ public class SharedPreferencesData {
                 putBoolean(PREF_POLLING_CHECKBOX_VAL,isOn).apply();
     }
 
-    public static boolean isFlagUpdateTaskOn(Context context){
+    public static boolean isFlagFetchTaskOn(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(FLAG_UPDATE_TASKS,false);
     }
 
-    public static void setFlagUpdateTasks(Context context,boolean flagValue){
+    public static void setFlagFetchTasks(Context context, boolean flagValue){
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit().putBoolean(FLAG_UPDATE_TASKS,flagValue).apply();
     }

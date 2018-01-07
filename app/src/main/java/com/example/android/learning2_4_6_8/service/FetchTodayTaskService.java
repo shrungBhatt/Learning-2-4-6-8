@@ -22,10 +22,19 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.learning2_4_6_8.R;
 import com.example.android.learning2_4_6_8.homeactivity.TaskHomeActivity;
 import com.example.android.learning2_4_6_8.models.TaskData;
+import com.example.android.learning2_4_6_8.util.ConnectionService;
 import com.example.android.learning2_4_6_8.util.SharedPreferencesData;
 import com.example.android.learning2_4_6_8.util.Util;
 
 
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,7 +44,7 @@ import java.util.Map;
 
 //This is the service class used to fetch the tasks from the server having current date.
 
-public class FetchTodayTaskService extends IntentService {
+public class FetchTodayTaskService extends IntentService{
 
     private List<TaskData> mTaskDatas;
     private int mTotalTasks;
@@ -57,7 +66,20 @@ public class FetchTodayTaskService extends IntentService {
         Log.i(TAG, "Received Intent: " + intent);
         Log.i(TAG, "Alarm Manager called");
 
-        fetchTaskData(FetchTodayTaskService.this);//Fetch Task from the server.
+       /* Intent connectionServiceIntent = new Intent(this, ConnectionService.class);
+        // Interval in seconds
+        connectionServiceIntent.putExtra(ConnectionService.TAG_INTERVAL, 100);
+        // URL to ping
+        connectionServiceIntent.putExtra(ConnectionService.TAG_URL_PING, "http://ersnexus.esy.es/");
+        // Name of the class that is calling this service
+        connectionServiceIntent.putExtra(ConnectionService.TAG_ACTIVITY_NAME, this.getClass().getName());
+        // Starts the service
+        startService(connectionServiceIntent);
+
+        fetchTaskData(FetchTodayTaskService.this);//Fetch Task from the server.*/
+
+       isNetworkAvailable();
+
     }
 
 
@@ -113,13 +135,13 @@ public class FetchTodayTaskService extends IntentService {
 
                         setmTotalTasks(mTaskDatas.size());
                         Log.i(TAG, String.valueOf(getmTotalTasks()));
-                        sendNotification(FetchTodayTaskService.this);//Notify the user.
+                        sendNotification(context);//Notify the user.
 
 
                         Util util = new Util();
                         if (mTaskDatas.size() != 0) {
                             util.updateTaskData(mTaskDatas,
-                                    FetchTodayTaskService.this, TAG);
+                                    context, TAG);
                         }
 
                     }
@@ -191,4 +213,33 @@ public class FetchTodayTaskService extends IntentService {
     public void setmTotalTasks(int mTotalTasks) {
         this.mTotalTasks = mTotalTasks;
     }
+
+    private boolean isNetworkAvailable(){
+        HttpGet httpGet = new HttpGet("http://ersnexus.esy.es/");
+        HttpParams httpParameters = new BasicHttpParams();
+
+        int timeoutConnection = 5000;
+        HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+
+        int timeoutSocket = 7000;
+        HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+
+        DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+        try{
+            httpClient.execute(httpGet);
+            Log.i(TAG,"Network is available");
+            fetchTaskData(this);
+            return true;
+        }
+        catch(ClientProtocolException e){
+            e.printStackTrace();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+        Log.i(TAG,"Network is not available");
+        SharedPreferencesData.setFlagFetchTasks(this,true);
+        return false;
+    }
+
 }

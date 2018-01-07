@@ -110,7 +110,7 @@ public class CompletedTaskFragment extends Fragment {
     private void fetchCompletedTasks(Context context, final String TAG) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                "url",
+                "http://ersnexus.esy.es/fetch_completed_task_data.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

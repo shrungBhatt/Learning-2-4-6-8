@@ -69,6 +69,12 @@ public class TaskHomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(1).setText("All");
         mTabLayout.getTabAt(2).setText("Completed");
 
+        if(SharedPreferencesData.isFlagFetchTaskOn(this)){
+            FetchTodayTaskService obj = new FetchTodayTaskService();
+            obj.fetchTaskData(this);
+            SharedPreferencesData.setFlagFetchTasks(this,false);
+        }
+
 
     }
 

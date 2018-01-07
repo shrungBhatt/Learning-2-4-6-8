@@ -89,7 +89,7 @@ public class Util {
 
                 case 4:
                     mCase4Flag = true;
-                    addCompletedTask(context, TAG, startDate, endDate, taskHeader, taskContent);
+                    addCompletedTask(context, TAG, startDate, endDate, taskHeader, taskContent,repCounter);
                     deleteCompletedTask(context, TAG, id);
                     break;
             }
@@ -140,7 +140,7 @@ public class Util {
 
     private void addCompletedTask(Context context, final String TAG, final String startDate,
                                   final String endDate, final String taskHeader,
-                                  final String taskContent) {
+                                  final String taskContent,final int repCounter) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 "http://ersnexus.esy.es/add_completed_tasks.php",
@@ -163,6 +163,7 @@ public class Util {
                 params.put("end_date", endDate);
                 params.put("task_content", taskContent);
                 params.put("task_header", taskHeader);
+                params.put("rep_counter",String.valueOf(repCounter));
                 return params;
             }
 

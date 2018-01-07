@@ -30,6 +30,7 @@
 
 
         <service android:name=".service.FetchTodayTaskService" />
+        <service android:name=".util.ConnectionService"/>
 
     </application>
 
